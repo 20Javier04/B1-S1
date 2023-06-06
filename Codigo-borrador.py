@@ -2,20 +2,17 @@
 #----------------------------------------------------------------------
 # Librerias
 #----------------------------------------------------------------------
-import pygame as PG, tkinter as TK, sys
+import pygame as PG, tkinter as TK, sys, math
 from tkinter import ttk
 #----------------------------------------------------------------------
 # Constantes
 #----------------------------------------------------------------------
-nRES = (800, 500) ; lOk = True ; G = 9.8
-#----------------------------------------------------------------------
-# Coeficientes de roce
-#----------------------------------------------------------------------
+nRES = (800, 500) ; lOk = True ; G = 10 ; LM1 = 180; COS180 = -1 
 #----------------------------------------------------------------------
 # Crear Pantalla Tkinter
 #----------------------------------------------------------------------
-win = TK.Tk()
-frame = ttk.Frame(win, width=250, height=250)
+window = TK.Tk()
+frame = ttk.Frame(window, width=300, height=300)
 frame.pack()
 
 #----------------------------------------------------------------------
@@ -29,40 +26,24 @@ def PVentana(nRES):
 #----------------------------------------------------------------------
 # Mostrar por pantalla tkinter
 #----------------------------------------------------------------------
-def button1_clicked():
-    input_text = entry.get()
-    output_text = "Iniciando simulacion"
-    output_label.config(text=output_text)
-
-def button2_clicked():
-    input_text = entry.get()
-    output_text = "calculando"
-    output_label.config(text=output_text)
-
-button1 = TK.Button(win, text="Iniciar Simulacion", command=button1_clicked)
-button1.pack()
-
-button2 = TK.Button(win, text="Calcular Ecuacion", command=button2_clicked)
-button2.pack()
-
-#----------------------------------------------------------------------
-# Entrada de datos ##por terminar
-#----------------------------------------------------------------------
-entry = TK.Entry(win)
-entry.pack()
+#funcion
 #----------------------------------------------------------------------
 # caso 1
 #----------------------------------------------------------------------
-#funcion
-#----------------------------------------------------------------------
-# caso 2
-#----------------------------------------------------------------------
-#funcion
-#----------------------------------------------------------------------
-# caso 3
-#----------------------------------------------------------------------
-#funcion
+def caso1(m, h1, h2, dx, G, COS180):
+   Emeca = m * G * h1
+   Emecd = m * G * h2
+   Wfnc = Emecd - Emeca
+   Fr = Wfnc / (dx * COS180)
 
+   result_text = f"Eme ca: {Emeca} J\nEme cd: {Emecd} J\nWfnc: {Wfnc} J\nFr: {Fr} N"
+   result_label.config(text=result_text)
+def calculate_energy():
+    m = float(masa_entry.get())
+    h1 = float(altura_a_entry.get())
+    h2 = float(altura_d_entry.get())
+    dx = float(distancia_roce_entry.get())
+    caso1(m, h1, h2, dx, G, COS180)
 #----------------------------------------------------------------------
 # While principal
 #----------------------------------------------------------------------
@@ -89,7 +70,7 @@ while lOk:
  ventana.blit(text_surface, text_rect)
  
  PG.display.flip()
- win.update()
+ window.update()
  clock.tick(60)
 PG.quit()
 sys.exit()
