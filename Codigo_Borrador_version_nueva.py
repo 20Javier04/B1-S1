@@ -3,16 +3,18 @@
 #----------------------------------------------------------------------
 import pygame as PG, tkinter as TK, sys, math
 from tkinter import ttk
+import os
 #----------------------------------------------------------------------
 # Constantes
 #----------------------------------------------------------------------
-nRES = (800, 500) ; lOk = True ; G = 10 ; LM1 = 180; COS180 = -1 
+nRES = (600, 300) ; lOk = True ; G = 10 ; LM1 = 180; COS180 = -1 
+NEGRO = (0, 0, 0); LADO = 50; X = 100; Y = 100
 #----------------------------------------------------------------------
 # Crear Pantalla Tkinter
 #----------------------------------------------------------------------
 window = TK.Tk()
 window.title("Energy Calculation")
-window.geometry("300x300")
+window.geometry("800x600")
 
 #----------------------------------------------------------------------
 # Crear Pantalla Pygame
@@ -22,6 +24,16 @@ def PVentana(nRES):
     ventana = PG.display.set_mode(nRES)
     nVentana  = PG.display.set_caption('simulacion')
     return ventana
+#----------------------------------------------------------------------
+# Juntar las 2 ventanas
+#----------------------------------------------------------------------
+frame = TK.Frame(window, width=600, height=300)
+frame.pack()
+
+os.environ["SDL_WINDOWID"] = str(frame.winfo_id()) 
+os.environ["SDL_VIDEODRIVER"] = "windib" 
+
+screen = PVentana(nRES)
 #----------------------------------------------------------------------
 # caso 1
 #----------------------------------------------------------------------
@@ -33,6 +45,7 @@ def caso1(m, h1, h2, dx, G, COS180):
 
    result_text = f"Eme ca: {Emeca} J\nEme cd: {Emecd} J\nWfnc: {Wfnc} J\nFr: {Fr} N"
    result_label.config(text=result_text)
+   
 def calculate_energy():
     m = float(masa_entry.get())
     h1 = float(altura_a_entry.get())
@@ -88,14 +101,17 @@ while lOk:
      lOk = False
      
  ventana.fill((0, 255, 0))
+ PG.draw.rect(ventana, NEGRO, (X, Y,LADO,LADO))
  
- text_surface = font.render("simulacion", True, (255, 255, 255))
- text_rect = text_surface.get_rect(center=(nRES[0] // 2, nRES[1] // 2))
+ text_surface = font.render("Simulacion", True, (255, 255, 255))
+ text_rect = text_surface.get_rect(center=(nRES[0] // 2, nRES[1] // 6))
  ventana.blit(text_surface, text_rect)
  
  PG.display.flip()
  window.update()
+ frame.update()
  clock.tick(60)
 window.mainloop()
+
 PG.quit()
 sys.exit()
