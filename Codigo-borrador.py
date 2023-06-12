@@ -43,7 +43,22 @@ def calculate_energy():
     h1 = float(altura_a_entry.get())
     h2 = float(altura_d_entry.get())
     dx = float(distancia_roce_entry.get())
-    caso1(m, h1, h2, dx, G, COS180)
+    caso1(m, h1, h2, dx, G, COS180
+#----------------------------------------------------------------------
+# caso 2
+#----------------------------------------------------------------------
+def caso2(altura):
+   
+  if    altura is None:
+        
+      print("Altura no proporcionada")
+  elif  altura == "":
+        
+     print("Falta ingresar la altura")
+  else:
+          
+        
+     
 #----------------------------------------------------------------------
 # While principal
 #----------------------------------------------------------------------
