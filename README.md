@@ -43,6 +43,7 @@ Algunas aplicaciones comunes incluyen:
 
 Frenado de vehículos: El estudio de la fuerza de roce es fundamental para comprender cómo los frenos de un vehículo reducen su velocidad 
 al convertir la energía cinética en calor debido a la fricción entre las pastillas de freno y los discos o tambores.
+
 Deslizamiento de objetos: La fuerza de roce es fundamental para comprender cómo los objetos se deslizan o se mueven sobre diferentes 
 superficies. Por ejemplo, al empujar un objeto pesado sobre el suelo, la fuerza de roce determina la resistencia al movimiento y la
 cantidad de energía necesaria para superarla.
