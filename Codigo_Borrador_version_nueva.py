@@ -1,21 +1,25 @@
+# ____________________________________________________________________
+#/                                                                    \
+#|              Energía y trabajo de la fuerza de roce                |
+#|                     (Sistema no conservativo)                      |
+#|                                                                    |
+#| by: Javier Muñoz, Abdiel Molina, Tomas Ahumada, Yadhira Zambrano   |
+#\____________________________________________________________________/
 #----------------------------------------------------------------------
 # Librerias
 #----------------------------------------------------------------------
-import pygame as PG, tkinter as TK, sys, math
-from tkinter import ttk
-import os
+import pygame as PG, tkinter as TK, matplotlib as ML, sys, math, os
+from tkinter import ttk ; from pygame.locals import *
 #----------------------------------------------------------------------
 # Constantes
 #----------------------------------------------------------------------
-nRES = (600, 300) ; lOk = True ; G = 10 ; LM1 = 180; COS180 = -1 
-NEGRO = (0, 0, 0); LADO = 50; X = 100; Y = 100
-#----------------------------------------------------------------------
-# Crear Pantalla Tkinter
-#----------------------------------------------------------------------
-window = TK.Tk()
-window.title("Energy Calculation")
-window.geometry("800x600")
+nRES = (600, 400) ; lOk = True ; G = 10 ; LM1 = 180; COS180 = -1 ; 
+px = 26 ; py = 107
 
+# ____________________________________________________________________
+#/                                                                    \
+#|        /Parte del codigo relacionada con la ventana Pygame\        |
+#\____________________________________________________________________/
 #----------------------------------------------------------------------
 # Crear Pantalla Pygame
 #----------------------------------------------------------------------
@@ -23,17 +27,106 @@ def PVentana(nRES):
     PG.init()
     ventana = PG.display.set_mode(nRES)
     nVentana  = PG.display.set_caption('simulacion')
+    fuente = PG.font.SysFont("Arial", 18)
     return ventana
 #----------------------------------------------------------------------
-# Juntar las 2 ventanas
+# cargar imagenes en formato Pygame
 #----------------------------------------------------------------------
-frame = TK.Frame(window, width=600, height=300)
-frame.pack()
+def Load_Image(sFile,transp = False):
+    try: image = PG.image.load(sFile)
+    except (PG.error) as message:
+           raise SystemExit (message)
+    image = image.convert()
+    if transp:
+       color = image.get_at((0,0))
+       image.set_colorkey(color,RLEACCEL)
+    return image
+#----------------------------------------------------------------------
+# cargar imagenes en formato Pygame
+#----------------------------------------------------------------------
+def Fig_Init():
+    aImg = []
+    aImg.append(Load_Image('fondo.png',False )) # fondo    |0
+    aImg.append(Load_Image('pelota.png',True )) # pelota   |1
+    aImg.append(Load_Image('base.png',True ))   # base     |2
+    return aImg
+#-----------------------------------------------------------------------
+# Pintar el fondo de la ventana pygame
+#-----------------------------------------------------------------------
+def Pinta_Pantalla():
+    Pantalla.blit(aSprt[0],(0,0))
+    return
+#-----------------------------------------------------------------------
+# Pintar la pelota en la ventana pygame
+#-----------------------------------------------------------------------
+def Pinta_Pelota():
+    Pantalla.blit(aSprt[1],(px,py))
+    return
+#-----------------------------------------------------------------------
+# Pintar la base en la ventana pygame
+#-----------------------------------------------------------------------
+def Pinta_base():
+    Pantalla.blit(aSprt[2],(19,128))
+    return
+#-----------------------------------------------------------------------
+# simulacion del caso 1
+#-----------------------------------------------------------------------
+def Mover_Pelota():
+    global px, py
+    if px < 148:
+        px += 1.2 * 1.5
+        py += 2 * 1.5
+    elif px < 357:
+        px += 2.5
+    elif px < 520 or py > 183:
+        px += 2
+        py -= 1.43
 
-os.environ["SDL_WINDOWID"] = str(frame.winfo_id()) 
-os.environ["SDL_VIDEODRIVER"] = "windib" 
+#-----------------------------------------------------------------------
+# actualizacion de pygame
+#-----------------------------------------------------------------------
+def Actualizar_Pantalla():
+    frame.update()
+    Mover_Pelota()
+    Pinta_Pantalla()
+    Pinta_base()
+    Pinta_Pelota()
+    PG.display.flip()
+# ----------------------------------------------------------------------
+# bucle while del codigo pygame
+# ----------------------------------------------------------------------
+def Iniciar_Simulacion():
+    global lOk
+    lOk = True
+    px = 26
+    py = 107 
+    while lOk:
+        for event in PG.event.get():
+            if event.type == PG.QUIT:
+                lOk = False
+            if event.type == PG.KEYDOWN:
+                if event.key == PG.K_ESCAPE:
+                    lOk = False
 
-screen = PVentana(nRES)
+        cKey = PG.key.get_pressed()
+        if cKey[PG.K_ESCAPE]:
+            lOk = False
+
+        Actualizar_Pantalla()
+        clock.tick(60)
+
+    PG.quit()
+    sys.exit()
+
+# ____________________________________________________________________
+#/                                                                    \
+#|       /Parte del codigo relacionada con la ventana Tkinter\        |
+#\____________________________________________________________________/
+
+#----------------------------------------------------------------------
+# Crear Pantalla Tkinter
+#----------------------------------------------------------------------
+window = TK.Tk() ; window.title("Datos") ; window.geometry("800x700")
 #----------------------------------------------------------------------
 # caso 1
 #----------------------------------------------------------------------
@@ -43,7 +136,7 @@ def caso1(m, h1, h2, dx, G, COS180):
    Wfnc = Emecd - Emeca
    Fr = Wfnc / (dx * COS180)
 
-   result_text = f"Eme ca: {Emeca} J\nEme cd: {Emecd} J\nWfnc: {Wfnc} J\nFr: {Fr} N"
+   result_text = f'''Eme ca: {Emeca} J\nEme cd: {Emecd} J\nWfnc: {Wfnc} J\nFr: {Fr} N'''
    result_label.config(text=result_text)
    
 def calculate_energy():
@@ -53,7 +146,7 @@ def calculate_energy():
     dx = float(distancia_roce_entry.get())
     caso1(m, h1, h2, dx, G, COS180)
 #----------------------------------------------------------------------
-# Mostrar por pantalla tkinter
+# cracion de botones
 #----------------------------------------------------------------------
 masa_label = TK.Label(window, text="Masa:")
 masa_label.pack()
@@ -78,40 +171,33 @@ distancia_roce_entry.pack()
 calculate_button = TK.Button(window, text="Calcular", command=calculate_energy)
 calculate_button.pack()
 
+start_simulation_button = TK.Button(window, text="Iniciar Simulacion", command=Iniciar_Simulacion)
+start_simulation_button.pack()
+
 result_label = TK.Label(window, text="")
 result_label.pack()
 
+# ____________________________________________________________________
+#/                                                                    \
+#|                     /unificacion de ventanas\                      |
+#\____________________________________________________________________/
 #----------------------------------------------------------------------
-# While principal
+# Juntar las 2 ventanas
 #----------------------------------------------------------------------
-ventana = PVentana(nRES)
-font = PG.font.Font(None, 36)
+frame = TK.Frame(window, width=600, height=400)
+frame.pack()
+
+os.environ["SDL_WINDOWID"] = str(frame.winfo_id()) 
+os.environ["SDL_VIDEODRIVER"] = "windib" 
+
+screen = PVentana(nRES)
+# ____________________________________________________________________
+#/                                                                    \
+#|             /bucle en el cual se ejecuta el programa\              |
+#\____________________________________________________________________/
+#----------------------------------------------------------------------
+Pantalla = PVentana(nRES)
+aSprt = Fig_Init()
 clock = PG.time.Clock()
 #----------------------------------------------------------------------
-while lOk:
- for event in PG.event.get():
-  if event.type == PG.QUIT:
-     lOk = False
-  if event.type == PG.KEYDOWN:
-      if event.key == PG.K_ESCAPE:
-          lOk = False
-
- cKey = PG.key.get_pressed()
- if cKey[PG.K_ESCAPE]:
-     lOk = False
-     
- ventana.fill((0, 255, 0))
- PG.draw.rect(ventana, NEGRO, (X, Y,LADO,LADO))
- 
- text_surface = font.render("Simulacion", True, (255, 255, 255))
- text_rect = text_surface.get_rect(center=(nRES[0] // 2, nRES[1] // 6))
- ventana.blit(text_surface, text_rect)
- 
- PG.display.flip()
- window.update()
- frame.update()
- clock.tick(60)
 window.mainloop()
-
-PG.quit()
-sys.exit()
