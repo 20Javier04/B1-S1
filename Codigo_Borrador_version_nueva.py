@@ -35,11 +35,11 @@ def PVentana(nRES):
 def Load_Image(sFile,transp = False):
     try: image = PG.image.load(sFile)
     except (PG.error) as message:
-           raise SystemExit (message)
+            raise SystemExit (message)
     image = image.convert()
     if transp:
-       color = image.get_at((0,0))
-       image.set_colorkey(color,RLEACCEL)
+        color = image.get_at((0,0))
+        image.set_colorkey(color,RLEACCEL)
     return image
 #----------------------------------------------------------------------
 # cargar imagenes en formato Pygame
