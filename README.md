@@ -46,4 +46,22 @@ al convertir la energía cinética en calor debido a la fricción entre las past
 
 Deslizamiento de objetos: La fuerza de roce es fundamental para comprender cómo los objetos se deslizan o se mueven sobre diferentes 
 superficies. Por ejemplo, al empujar un objeto pesado sobre el suelo, la fuerza de roce determina la resistencia al movimiento y la
-cantidad de energía necesaria para superarla.
+cantidad de energía necesaria para superarla.}
+
+Descripción de las herramientas utilizadas:
+Se hizo uso del lenguaje de programacion de alto nivel Python del cual utilizamos 6 librerias: Pygame para programar la simulacion del fenomeno fisico,  Tkinter la cual fue utilizada para el ingreso de datos y posteriores resultados de las ecuaciones del programa, aparte de ser donde se ejecuta el programa, matplotlib la cual fue utilizada para graficar los resultados de las ecuaciones , Sys es para complementar el trabajo con pygame, Os fue utilizada para la unificacion del las ventanas pygame y tkinter, con tkinter como la ventana contenedora.
+
+Guia de instalación:
+
+El programa es retrocompatible entre las versiones de Python 2.7.15 y 3.10.10
+
+1.- Instalar lenguaje Python 2.7.15 o superior.
+2.- Instalar un editor de codigo (opcional).
+3.- instalar las librerias necesarias  para ello ingresar en la terminal del computador:
+  -pip install pygame
+  -pip install tkinter
+  -pip install matplotlib
+  -pip install sys
+  -pip install os
+4.- Descargar los archivos y almacenarlos en una sola carpeta.
+5.- Ejecutar el archivo '.py'.
