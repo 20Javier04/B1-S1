@@ -35,11 +35,11 @@ def PVentana(nRES):
 def Load_Image(sFile,transp = False):
     try: image = PG.image.load(sFile)
     except (PG.error) as message:
-           raise SystemExit (message)
+            raise SystemExit (message)
     image = image.convert()
     if transp:
-       color = image.get_at((0,0))
-       image.set_colorkey(color,RLEACCEL)
+        color = image.get_at((0,0))
+        image.set_colorkey(color,RLEACCEL)
     return image
 #----------------------------------------------------------------------
 # cargar imagenes en formato Pygame
@@ -138,7 +138,7 @@ def caso1(m, h1, h2, dx, G, COS180):
 
    result_text = f'''Eme ca: {Emeca} J\nEme cd: {Emecd} J\nWfnc: {Wfnc} J\nFr: {Fr} N'''
    result_label.config(text=result_text)
-   
+
 def calculate_energy():
     m = float(masa_entry.get())
     h1 = float(altura_a_entry.get())
