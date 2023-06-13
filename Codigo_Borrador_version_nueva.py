@@ -8,7 +8,7 @@
 #----------------------------------------------------------------------
 # Librerias
 #----------------------------------------------------------------------
-import pygame as PG, tkinter as TK, matplotlib as ML, sys, os
+import pygame as PG, tkinter as TK, sys, os
 from tkinter import ttk ; from pygame.locals import *
 #----------------------------------------------------------------------
 # Constantes
