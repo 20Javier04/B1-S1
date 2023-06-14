@@ -53,11 +53,16 @@ Se hizo uso del lenguaje de programacion de alto nivel Python del cual utilizamo
 
 Guia de instalación:
 
-El programa es retrocompatible entre las versiones de Python 2.7.15 y 3.10.10
-
-1.- Instalar lenguaje Python 2.7.15 o superior.
-2.- Instalar un editor de codigo (opcional).
+1.- Instalar lenguaje Python 3.10
+Para instalar Python 3.10:
+    - Ir a esta pagina:
+2.- Instalar un editor de codigo (opcional) como Visual Studio Code:
+Para instalar este editor de codigo:
+    - Ir a esta pagina: https://code.visualstudio.com/
+    - Presionar Download for Windows o apretar la flecha para desplegar las versiones macOs, Linux, si es que tiene uno de estos sistemas operativos.
+    - Despues se descargara el instalador, abrirlo y instalar Visual Studio Code
 3.- instalar las librerias necesarias  para ello ingresar en la terminal del computador:
+Para ingresar a la terminal del computador tiene que presionar las tecla de windows + r y escribir cmd. Al tener abierta la terminal instalar las librerias escribiendo esto(se demora un poco en instalar)
   -pip install pygame
   -pip install tkinter
   -pip install sys
