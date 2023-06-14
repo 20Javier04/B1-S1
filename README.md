@@ -60,7 +60,7 @@ Para instalar Python 3.11:
     - Despues abralo y instale python, al abrir visual studio code deberia tener integrado python
       despues de esto.
       
-2.- Instalar un editor de codigo (opcional) como Visual Studio Code:
+2.- Instalar un editor de codigo como Visual Studio Code:
 Para instalar este editor de codigo:
     - Ir a esta pagina: https://code.visualstudio.com/
     - Presionar Download for Windows o apretar la flecha para desplegar las versiones macOs, Linux, si es que tiene uno de estos sistemas operativos.
