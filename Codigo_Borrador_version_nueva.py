@@ -87,10 +87,10 @@ def Pinta_datos():
 # simulacion del caso 1
 #-----------------------------------------------------------------------
 def Mover_Pelota():
-    global px, py, h1, h2, dx, Fr
+    global px, py, h1, h2, dx, Fr, G
     if px < 148:
-        px += 1.2 * (h1/10)
-        py += 2 * (h1/10)
+        px += 1.2 * (h1/G)
+        py += 2 * (h1/G)
     elif px < 357:
         px += 2.5 * (dx/Fr+0.55)
     elif px < 520 or py > 183:
