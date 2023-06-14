@@ -66,12 +66,15 @@ Para instalar este editor de codigo:
     - Despues se descargara el instalador, abrirlo y instalar Visual Studio Code
 3.- Instalar las librerias necesarias  para ello ingresar en la terminal del computador:
 Para ingresar a la terminal del computador tiene que presionar las tecla de windows + r y escribir cmd. Al tener abierta la terminal instalar las librerias escribiendo esto(se demora un poco en instalar)
-  -pip install pygame
-  -pip install tkinter
-  -pip install sys
-  -pip install os
-4.- Descargar los archivos y almacenarlos en una sola carpeta
-   - Para descargar el programa de esta simulacion tiene que ir a la pagina:
-   - 
+    - pip install pygame
+    - pip install tkinter
+    - pip install sys
+    - pip install os
+4.- Descargar los archivos:
+    - Para descargar el programa de esta simulacion tiene que ir a la pagina: https://github.com/20Javier04/Eva-Transdisciplinar-2023-B1-S1
+    - Despues de ingresar a la pagina presionar donde dice Code y se despliegan algunas opciones, presionar download ZIP.
+    - Se descargaria el programa en un archivo ZIP, tiene que descomprimirlo y despues de eso queda una carpeta con el programa.
 
-5.- Ejecutar el archivo '.py'.
+5.- Ejecutar el programa:
+    - Para ejecutar el programa abra Visual Studio Code (recordar que tiene que tener instaladas las librerias)
+    - Presionar en la esquina superior izquierda donde dice Archivo, Abrir carpeta y buscar el directorio donde se descomprimio esta.
