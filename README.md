@@ -53,19 +53,25 @@ Se hizo uso del lenguaje de programacion de alto nivel Python del cual utilizamo
 
 Guia de instalación:
 
-1.- Instalar lenguaje Python 3.10
-Para instalar Python 3.10:
-    - Ir a esta pagina:
+1.- Instalar lenguaje Python 3.11
+Para instalar Python 3.11:
+    - Ir a esta pagina: https://www.python.org/downloads/
+    - Se descargara el instalador
+    - Despues abralo y instale python, al abrir visual studio code deberia tener integrado python
+      despues de esto.
 2.- Instalar un editor de codigo (opcional) como Visual Studio Code:
 Para instalar este editor de codigo:
     - Ir a esta pagina: https://code.visualstudio.com/
     - Presionar Download for Windows o apretar la flecha para desplegar las versiones macOs, Linux, si es que tiene uno de estos sistemas operativos.
     - Despues se descargara el instalador, abrirlo y instalar Visual Studio Code
-3.- instalar las librerias necesarias  para ello ingresar en la terminal del computador:
+3.- Instalar las librerias necesarias  para ello ingresar en la terminal del computador:
 Para ingresar a la terminal del computador tiene que presionar las tecla de windows + r y escribir cmd. Al tener abierta la terminal instalar las librerias escribiendo esto(se demora un poco en instalar)
   -pip install pygame
   -pip install tkinter
   -pip install sys
   -pip install os
-4.- Descargar los archivos y almacenarlos en una sola carpeta.
+4.- Descargar los archivos y almacenarlos en una sola carpeta
+   - Para descargar el programa de esta simulacion tiene que ir a la pagina:
+   - 
+
 5.- Ejecutar el archivo '.py'.
