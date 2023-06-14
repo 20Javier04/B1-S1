@@ -15,6 +15,7 @@ from tkinter import ttk ; from pygame.locals import *
 #----------------------------------------------------------------------
 nRES = (600, 400) ; lOk = True ; G = 10 ; LM1 = 180; COS180 = -1 ; 
 px = 26 ; py = 107
+
 # ____________________________________________________________________
 #/                                                                    \
 #|        /Parte del codigo relacionada con la ventana Pygame\        |
@@ -234,11 +235,10 @@ window.protocol("WM_DELETE_WINDOW", cerrar_ventana)
 screen = PVentana(nRES)
 # ____________________________________________________________________
 #/                                                                    \
-#|             /bucle en el cual se ejecuta el programa\              |
+#|                  /ejecutaciones de el programa\                    |
 #\____________________________________________________________________/
 #----------------------------------------------------------------------
 Pantalla = PVentana(nRES)
 aSprt = Fig_Init()
 clock = PG.time.Clock()
-#----------------------------------------------------------------------
 window.mainloop()
