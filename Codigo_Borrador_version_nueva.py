@@ -8,7 +8,7 @@
 #----------------------------------------------------------------------
 # Librerias
 #----------------------------------------------------------------------
-import pygame as PG, tkinter as TK, matplotlib as ML, sys, math, PIL
+import pygame as PG, tkinter as TK, sys, os
 from tkinter import ttk ; from pygame.locals import *
 #----------------------------------------------------------------------
 # Constantes
@@ -19,7 +19,6 @@ px = 26 ; py = 107
 #/                                                                    \
 #|        /Parte del codigo relacionada con la ventana Pygame\        |
 #\____________________________________________________________________/
-
 #----------------------------------------------------------------------
 # Crear Pantalla Pygame
 #----------------------------------------------------------------------
@@ -35,11 +34,11 @@ def PVentana(nRES):
 def Load_Image(sFile,transp = False):
     try: image = PG.image.load(sFile)
     except (PG.error) as message:
-           raise SystemExit (message)
+            raise SystemExit (message)
     image = image.convert()
     if transp:
-       color = image.get_at((0,0))
-       image.set_colorkey(color,RLEACCEL)
+        color = image.get_at((0,0))
+        image.set_colorkey(color,RLEACCEL)
     return image
 #----------------------------------------------------------------------
 # cargar imagenes en formato Pygame
@@ -69,28 +68,65 @@ def Pinta_base():
     Pantalla.blit(aSprt[2],(19,128))
     return
 #-----------------------------------------------------------------------
+# Pintar los datos en la ventana pygame
+#-----------------------------------------------------------------------
+def Pinta_datos():
+    global m, h1, h2, dx
+    
+    fuente = PG.font.Font(None, 24)
+    tAlturaA = fuente.render(f'A: {h1}m', False, (0, 0, 0))
+    tAlturaD = fuente.render(f'D: {h2}m', False, (0, 0, 255))
+    tDRoce = fuente.render(f'Distancia de Roce: {dx}m', False, (128, 0, 128))
+    
+    Pantalla.blit(tAlturaA, (19,120))
+    Pantalla.blit(tAlturaD, (530,210))
+    Pantalla.blit(tDRoce, (200,340))
+    return
+#-----------------------------------------------------------------------
 # simulacion del caso 1
 #-----------------------------------------------------------------------
 def Mover_Pelota():
-    global px, py
+    global px, py, h1, h2, dx, Fr
     if px < 148:
-        px += 1.2 * 1.5
-        py += 2 * 1.5
+        px += 1.2 * (h1/10)
+        py += 2 * (h1/10)
     elif px < 357:
-        px += 2.5
+        px += 2.5 * (dx/Fr+0.55)
     elif px < 520 or py > 183:
-        px += 2
-        py -= 1.43
-
+        px += 2 * (h2/Fr+0.5)
+        py -= 1.43 * (h2/Fr+0.5)
 #-----------------------------------------------------------------------
 # actualizacion de pygame
 #-----------------------------------------------------------------------
 def Actualizar_Pantalla():
+    frame.update()
     Mover_Pelota()
     Pinta_Pantalla()
     Pinta_base()
     Pinta_Pelota()
+    Pinta_datos()
     PG.display.flip()
+#-----------------------------------------------------------------------
+# cerrar pygame
+#-----------------------------------------------------------------------
+def cerrar_ventana():
+    PG.quit()
+    window.destroy()
+#-----------------------------------------------------------------------
+# reiniciar pygame
+#-----------------------------------------------------------------------
+def reiniciar_simulacion():
+    global px, py, m, h1, h2, dx
+
+    px = 26
+    py = 107
+    m = 0
+    h1 = 0
+    h2 = 0
+    dx = 0
+    
+    Iniciar_Simulacion()
+
 # ----------------------------------------------------------------------
 # bucle while del codigo pygame
 # ----------------------------------------------------------------------
@@ -110,12 +146,10 @@ def Iniciar_Simulacion():
         cKey = PG.key.get_pressed()
         if cKey[PG.K_ESCAPE]:
             lOk = False
-
+            cerrar_ventana()
+            
         Actualizar_Pantalla()
         clock.tick(60)
-
-    PG.quit()
-    sys.exit()
 
 # ____________________________________________________________________
 #/                                                                    \
@@ -125,11 +159,12 @@ def Iniciar_Simulacion():
 #----------------------------------------------------------------------
 # Crear Pantalla Tkinter
 #----------------------------------------------------------------------
-window = TK.Tk() ; window.title("Datos") ; window.geometry("300x300")
+window = TK.Tk() ; window.title("Datos") ; window.geometry("800x700")
 #----------------------------------------------------------------------
-# caso 1
+# caso 1 (Todos los datos)
 #----------------------------------------------------------------------
 def caso1(m, h1, h2, dx, G, COS180):
+   global Fr
    Emeca = m * G * h1
    Emecd = m * G * h2
    Wfnc = Emecd - Emeca
@@ -137,50 +172,70 @@ def caso1(m, h1, h2, dx, G, COS180):
 
    result_text = f'''Eme ca: {Emeca} J\nEme cd: {Emecd} J\nWfnc: {Wfnc} J\nFr: {Fr} N'''
    result_label.config(text=result_text)
-   
+#----------------------------------------------------------------------
 def calculate_energy():
+    global m, h1, h2, dx
     m = float(masa_entry.get())
     h1 = float(altura_a_entry.get())
     h2 = float(altura_d_entry.get())
     dx = float(distancia_roce_entry.get())
     caso1(m, h1, h2, dx, G, COS180)
+    return m, h1, h2, dx
 #----------------------------------------------------------------------
-# cracion de botones
+# Almacenamiento de datos
 #----------------------------------------------------------------------
-masa_label = TK.Label(window, text="Masa:")
+m = 0 ; h1 = 0 ; h2 = 0 ; dx = 0 ; Fr = 0
+#----------------------------------------------------------------------
+# creacion de botones
+#----------------------------------------------------------------------
+masa_label = TK.Label(window, text="Masa(kg)")
 masa_label.pack()
 masa_entry = TK.Entry(window)
 masa_entry.pack()
-
-altura_a_label = TK.Label(window, text="Altura A:")
+#----------------------------------------------------------------------
+altura_a_label = TK.Label(window, text="Altura A(m)")
 altura_a_label.pack()
 altura_a_entry = TK.Entry(window)
 altura_a_entry.pack()
-
-altura_d_label = TK.Label(window, text="Altura D:")
+#----------------------------------------------------------------------
+altura_d_label = TK.Label(window, text="Altura D(m)")
 altura_d_label.pack()
 altura_d_entry = TK.Entry(window)
 altura_d_entry.pack()
-
-distancia_roce_label = TK.Label(window, text="Distancia de roce:")
+#----------------------------------------------------------------------
+distancia_roce_label = TK.Label(window, text="Distancia de roce(m)")
 distancia_roce_label.pack()
 distancia_roce_entry = TK.Entry(window)
 distancia_roce_entry.pack()
-
+#----------------------------------------------------------------------
 calculate_button = TK.Button(window, text="Calcular", command=calculate_energy)
 calculate_button.pack()
-
-start_simulation_button = TK.Button(window, text="Iniciar Simulacion", command=Iniciar_Simulacion)
-start_simulation_button.pack()
-
+#----------------------------------------------------------------------
 result_label = TK.Label(window, text="")
 result_label.pack()
+#----------------------------------------------------------------------
+reiniciar_simulacion_button = TK.Button(window, text="Iniciar Simulacion", command=reiniciar_simulacion)
+reiniciar_simulacion_button.pack()
 
+# ____________________________________________________________________
+#/                                                                    \
+#|                     /unificacion de ventanas\                      |
+#\____________________________________________________________________/
+#----------------------------------------------------------------------
+# Juntar las 2 ventanas
+#----------------------------------------------------------------------
+frame = TK.Frame(window, width=600, height=400)
+frame.pack()
+
+os.environ["SDL_WINDOWID"] = str(frame.winfo_id()) 
+os.environ["SDL_VIDEODRIVER"] = "windib" 
+window.protocol("WM_DELETE_WINDOW", cerrar_ventana)
+
+screen = PVentana(nRES)
 # ____________________________________________________________________
 #/                                                                    \
 #|             /bucle en el cual se ejecuta el programa\              |
 #\____________________________________________________________________/
-
 #----------------------------------------------------------------------
 Pantalla = PVentana(nRES)
 aSprt = Fig_Init()
