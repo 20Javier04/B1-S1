@@ -183,6 +183,25 @@ def calculate_energy():
     caso1(m, h1, h2, dx, G, COS180)
     return m, h1, h2, dx
 #----------------------------------------------------------------------
+# caso 2 
+#----------------------------------------------------------------------
+def caso1(m, h1, dx, G, COS180):
+    global Fr
+    Emeca = m * G * h1
+    Wfnc = Emeca
+    Fr = Wfnc / (dx * COS180)
+
+    result_text = f'''Eme ca: {Emeca} J\nWfnc: {Wfnc} J\nFr: {Fr} N'''
+    result_label.config(text=result_text)
+#----------------------------------------------------------------------
+def calculate_energy_case2():
+    global m, h1, dx
+    m = float(masa_entry.get())
+    h1 = float(altura_a_entry.get())
+    dx = float(distancia_roce_entry.get())
+    caso2(m, h1, dx, G, COS180)
+    return m, h1, dx
+#----------------------------------------------------------------------
 # Almacenamiento de datos
 #----------------------------------------------------------------------
 m = 0 ; h1 = 0 ; h2 = 0 ; dx = 0 ; Fr = 0
