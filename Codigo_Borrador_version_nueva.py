@@ -8,14 +8,15 @@
 #----------------------------------------------------------------------
 # Librerias
 #----------------------------------------------------------------------
-import pygame as PG, tkinter as TK, sys, os
-from tkinter import ttk ; from pygame.locals import *
+import pygame as PG, tkinter as TK, matplotlib.pyplot as plt, sys, os
+import numpy as np
+from tkinter import ttk ; from pygame.locals import * 
+from PIL import Image, ImageTk
 #----------------------------------------------------------------------
 # Constantes
 #----------------------------------------------------------------------
 nRES = (600, 400) ; lOk = True ; G = 9.8 ; LM1 = 180; COS180 = -1 ; 
 px = 26 ; py = 107
-
 # ____________________________________________________________________
 #/                                                                    \
 #|        /Parte del codigo relacionada con la ventana Pygame\        |
@@ -46,7 +47,7 @@ def Load_Image(sFile,transp = False):
 #----------------------------------------------------------------------
 def Fig_Init():
     aImg = []
-    aImg.append(Load_Image('fondo.png',False )) # fondo    |0
+    aImg.append(Load_Image('fondo.png',False )) # fondo s  |0
     aImg.append(Load_Image('pelota.png',True )) # pelota   |1
     aImg.append(Load_Image('base.png',True ))   # base     |2
     return aImg
@@ -84,7 +85,7 @@ def Pinta_datos():
     Pantalla.blit(tDRoce, (200,340))
     return
 #-----------------------------------------------------------------------
-# simulacion del caso 1
+# simulacion del caso 1 (todos los datos)
 #-----------------------------------------------------------------------
 def Mover_Pelota():
     global px, py, h1, h2, dx, Fr, G
@@ -140,6 +141,7 @@ def Iniciar_Simulacion():
         for event in PG.event.get():
             if event.type == PG.QUIT:
                 lOk = False
+
             if event.type == PG.KEYDOWN:
                 if event.key == PG.K_ESCAPE:
                     lOk = False
@@ -151,7 +153,6 @@ def Iniciar_Simulacion():
             
         Actualizar_Pantalla()
         clock.tick(60)
-
 # ____________________________________________________________________
 #/                                                                    \
 #|       /Parte del codigo relacionada con la ventana Tkinter\        |
@@ -160,19 +161,33 @@ def Iniciar_Simulacion():
 #----------------------------------------------------------------------
 # Crear Pantalla Tkinter
 #----------------------------------------------------------------------
-window = TK.Tk() ; window.title("Programa 1.01") ; window.geometry("800x700")
+window = TK.Tk() ; window.title("Alpha") ; window.geometry("800x700")
+#----------------------------------------------------------------------
+# Cargar fondos Tkinter
+#----------------------------------------------------------------------
+bkg = Image.open("BkgTk.png") ; bkg = bkg.resize((800, 700)) 
+Ftk = ImageTk.PhotoImage(bkg)
+#----------------------------------------------------------------------
+fondo_label = TK.Label(window, image=Ftk)
+fondo_label.place(x=0, y=0, relwidth=1, relheight=1)
 #----------------------------------------------------------------------
 # caso 1 (Todos los datos)
 #----------------------------------------------------------------------
 def caso1(m, h1, h2, dx, G, COS180):
-   global Fr
-   Emeca = m * G * h1
-   Emecd = m * G * h2
-   Wfnc = Emecd - Emeca
-   Fr = Wfnc / (dx * COS180)
+    global Fr, Emeca, Emecd, Wfnc
+    Emeca_value = m * G * h1
+    Emecd_value = m * G * h2
+    Wfnc_value = Emecd_value - Emeca_value
+    Fr_value = Wfnc_value / (dx * COS180)
 
-   result_text = f'''Eme ca: {Emeca} J\nEme cd: {Emecd} J\nWfnc: {Wfnc} J\nFr: {Fr} N'''
-   result_label.config(text=result_text)
+    Emeca.append(Emeca_value)
+    Emecd.append(Emecd_value)
+    Wfnc.append(Wfnc_value)
+    Fr.append(Fr_value)
+
+    result_text = f'''Eme ca: {Emeca_value} J\nEme cd: {Emecd_value} J\nWfnc: {Wfnc_value} J\nFr: {Fr_value} N'''
+    result_label.config(text=result_text)
+    return Emeca_value, Emecd_value, Wfnc_value, Fr_value
 #----------------------------------------------------------------------
 def calculate_energy():
     global m, h1, h2, dx
@@ -180,12 +195,13 @@ def calculate_energy():
     h1 = float(altura_a_entry.get())
     h2 = float(altura_d_entry.get())
     dx = float(distancia_roce_entry.get())
+
     caso1(m, h1, h2, dx, G, COS180)
-    return m, h1, h2, dx
+    return m, h1, h2, dx,
 #----------------------------------------------------------------------
 # caso 2 
 #----------------------------------------------------------------------
-def caso1(m, h1, dx, G, COS180):
+def caso2(m, h1, dx, G, COS180):
     global Fr
     Emeca = m * G * h1
     Wfnc = Emeca
@@ -204,7 +220,24 @@ def calculate_energy_case2():
 #----------------------------------------------------------------------
 # Almacenamiento de datos
 #----------------------------------------------------------------------
-m = 0 ; h1 = 0 ; h2 = 0 ; dx = 0 ; Fr = 0
+m = 0 ; h1 = 0 ; h2 = 0 ; dx = 0 ; Fr = [] ; Emeca = [] ; Emecd = [] ; Wfnc = []
+#----------------------------------------------------------------------
+# Creacion del Grafico
+#----------------------------------------------------------------------
+def Grafica():
+    global Emeca, Emecd, Wfnc, Fr
+    
+    tiempo = np.arange(len(Emeca))
+
+    plt.bar(tiempo, Emeca, label='Emeca')
+    plt.bar(tiempo, Emecd, label='Emecd')
+    plt.bar(tiempo, Wfnc, label='Wfnc')
+    plt.bar(tiempo, Fr, label='Fr')
+
+    plt.xlabel('Tiempo')
+    plt.ylabel('Valores')
+    plt.legend()
+    plt.show()
 #----------------------------------------------------------------------
 # creacion de botones
 #----------------------------------------------------------------------
@@ -231,33 +264,44 @@ distancia_roce_entry.pack()
 calculate_button = TK.Button(window, text="Calcular", command=calculate_energy)
 calculate_button.pack()
 #----------------------------------------------------------------------
+calculate_button = TK.Button(window, text="Generar Grafico", command=Grafica)
+calculate_button.pack()
+#----------------------------------------------------------------------
 result_label = TK.Label(window, text="")
 result_label.pack()
 #----------------------------------------------------------------------
-reiniciar_simulacion_button = TK.Button(window, text="Iniciar Simulacion", command=reiniciar_simulacion)
+reiniciar_simulacion_button = TK.Button(window, text="Simulacion", command=reiniciar_simulacion)
 reiniciar_simulacion_button.pack()
-
 # ____________________________________________________________________
 #/                                                                    \
 #|                     /unificacion de ventanas\                      |
 #\____________________________________________________________________/
 #----------------------------------------------------------------------
-# Juntar las 2 ventanas
+# Juntar las ventanas Pygame y Tkinter
 #----------------------------------------------------------------------
 frame = TK.Frame(window, width=600, height=400)
+
 frame.pack()
 
 os.environ["SDL_WINDOWID"] = str(frame.winfo_id()) 
 os.environ["SDL_VIDEODRIVER"] = "windib" 
+#----------------------------------------------------------------------
+# Agregar el Grafico
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# Protocolo de Cerrado del Programa
+#----------------------------------------------------------------------
 window.protocol("WM_DELETE_WINDOW", cerrar_ventana)
 
 screen = PVentana(nRES)
 # ____________________________________________________________________
 #/                                                                    \
-#|                  /ejecutaciones de el programa\                    |
+#|             /bucle en el cual se ejecuta el programa\              |
 #\____________________________________________________________________/
 #----------------------------------------------------------------------
 Pantalla = PVentana(nRES)
 aSprt = Fig_Init()
 clock = PG.time.Clock()
+#----------------------------------------------------------------------
 window.mainloop()
