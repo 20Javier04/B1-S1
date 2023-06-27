@@ -15,7 +15,7 @@ from PIL import Image, ImageTk
 #----------------------------------------------------------------------
 # Constantes
 #----------------------------------------------------------------------
-nRES = (600, 400) ; lOk = True ; G = 10 ; LM1 = 180; COS180 = -1 ; 
+nRES = (600, 400) ; lOk = True ; G = 9.8 ; LM1 = 180; COS180 = -1 ; 
 px = 26 ; py = 107
 # ____________________________________________________________________
 #/                                                                    \
@@ -88,10 +88,10 @@ def Pinta_datos():
 # simulacion del caso 1 (todos los datos)
 #-----------------------------------------------------------------------
 def Mover_Pelota():
-    global px, py, h1, h2, dx, Fr
+    global px, py, h1, h2, dx, Fr, G
     if px < 148:
-        px += 1.2 * (h1/10)
-        py += 2 * (h1/10)
+        px += 1.2 * (h1/G)
+        py += 2 * (h1/G)
     elif px < 357:
         px += 2.5 * (dx/Fr+0.55)
     elif px < 520 or py > 183:
@@ -198,6 +198,25 @@ def calculate_energy():
 
     caso1(m, h1, h2, dx, G, COS180)
     return m, h1, h2, dx,
+#----------------------------------------------------------------------
+# caso 2 
+#----------------------------------------------------------------------
+def caso2(m, h1, dx, G, COS180):
+    global Fr
+    Emeca = m * G * h1
+    Wfnc = Emeca
+    Fr = Wfnc / (dx * COS180)
+
+    result_text = f'''Eme ca: {Emeca} J\nWfnc: {Wfnc} J\nFr: {Fr} N'''
+    result_label.config(text=result_text)
+#----------------------------------------------------------------------
+def calculate_energy_case2():
+    global m, h1, dx
+    m = float(masa_entry.get())
+    h1 = float(altura_a_entry.get())
+    dx = float(distancia_roce_entry.get())
+    caso2(m, h1, dx, G, COS180)
+    return m, h1, dx
 #----------------------------------------------------------------------
 # Almacenamiento de datos
 #----------------------------------------------------------------------
