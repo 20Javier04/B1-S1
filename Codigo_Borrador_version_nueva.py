@@ -178,16 +178,16 @@ def caso1(m, h1, h2, dx, G, COS180):
     Emeca_value = m * G * h1
     Emecd_value = m * G * h2
     Wfnc_value = Emecd_value - Emeca_value
-    Fr_value = Wfnc_value / (dx * COS180)
+    Fr = Wfnc_value / (dx * COS180)
 
     Emeca.append(Emeca_value)
     Emecd.append(Emecd_value)
     Wfnc.append(Wfnc_value)
-    Fr.append(Fr_value)
 
-    result_text = f'''Eme ca: {Emeca_value} J\nEme cd: {Emecd_value} J\nWfnc: {Wfnc_value} J\nFr: {Fr_value} N'''
+
+    result_text = f'''Eme ca: {Emeca_value} J\nEme cd: {Emecd_value} J\nWfnc: {Wfnc_value} J\nFr: {Fr} N'''
     result_label.config(text=result_text)
-    return Emeca_value, Emecd_value, Wfnc_value, Fr_value
+    return Emeca_value, Emecd_value, Wfnc_value, Fr
 #----------------------------------------------------------------------
 def calculate_energy():
     global m, h1, h2, dx
@@ -202,7 +202,6 @@ def calculate_energy():
 # caso 2 
 #----------------------------------------------------------------------
 def caso2(m, h1, dx, G, COS180):
-    global Fr
     Emeca = m * G * h1
     Wfnc = Emeca
     Fr = Wfnc / (dx * COS180)
@@ -220,7 +219,7 @@ def calculate_energy_case2():
 #----------------------------------------------------------------------
 # Almacenamiento de datos
 #----------------------------------------------------------------------
-m = 0 ; h1 = 0 ; h2 = 0 ; dx = 0 ; Fr = [] ; Emeca = [] ; Emecd = [] ; Wfnc = []
+m = 0 ; h1 = 0 ; h2 = 0 ; dx = 0 ; Fr = 0 ; Emeca = [] ; Emecd = [] ; Wfnc = []
 #----------------------------------------------------------------------
 # Creacion del Grafico
 #----------------------------------------------------------------------
